@@ -59,6 +59,7 @@ def create_table():
 #INSERT USER DATA
 @app.route('/api/insert_user',methods = ['GET'])
 def insert_user():
+    try:
       query = session.query(UserDetails).filter_by(user_name='Saurav Karki')
       c = query.count()
      
@@ -69,7 +70,13 @@ def insert_user():
           return jsonify({"message":"User added successfully"})
       else:
         return({'message':'User have already accessed 3 books'}) 
-
+    except:
+        return({
+            'status':404,
+            'message':'Error'
+            }) 
+    
+    
 #INSERT BOOK DATA
 @app.route('/api/insert_books/<int:b_id>',methods=['GET'])
 def insert_books(b_id):
@@ -107,6 +114,7 @@ def return_books(book_id):
 #BOOK LIST
 @app.route('/api/book_list',methods = ['GET'])
 def book_list():
+    try:
         sql = '''
         SELECT book_name, count(book_name) AS  Number_of_books
         FROM book
@@ -119,10 +127,17 @@ def book_list():
         print(df)
     
         return jsonify({'msg':'success'})
+    except:
+        return({
+            'status':404,
+            'message':'Error'
+            }) 
+   
 
 #Show Books According to Catgories   
 @app.route('/api/book_categories',methods = ['GET'])
 def book_cat():
+    try:
         sql = '''
        SELECT u.user_name, count(burrowed_book_id) AS Burrowed_books
        FROM userdetails u
@@ -137,10 +152,16 @@ def book_cat():
         print(df)
     
         return jsonify({'msg':'success'})
+    except:
+        return({
+            'status':404,
+            'message':'Error'
+            }) 
 
 #Books which is famous among users[top 5] 
 @app.route('/api/top_5',methods = ['GET'])
 def top_5_famous():
+    try:
         sql = '''
       SELECT u.user_name, count(burrowed_book_id) AS Burrowed_books
       FROM userdetails u
@@ -156,6 +177,11 @@ def top_5_famous():
         print(df)
     
         return jsonify({'msg':'success'})
+    except:
+        return({
+            'status':404,
+            'message':'Error'
+            }) 
 
 
 
@@ -163,6 +189,7 @@ def top_5_famous():
 #UPDATE BOOK 
 @app.route('/api/update',methods = ['GET'])
 def update_booklist():
+ try:
     sql = '''UPDATE book
             set  book_name ='Harry'
             WHERE book_id NOT IN (SELECT burrowed_book_id FROM userdetails)'''
@@ -176,6 +203,11 @@ def update_booklist():
     
 
     return jsonify({'msg':'Book Name Updated Successfully'})
+ except:
+        return({
+            'status':404,
+            'message':'Error'
+            }) 
 
 if __name__ == '__main__':
     app.run(debug=True)
