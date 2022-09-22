@@ -60,10 +60,10 @@ def create_table():
 @app.route('/api/insert_user',methods = ['GET'])
 def insert_user():
     try:
-      query = session.query(UserDetails).filter_by(user_name='Saurav Karki')
+      query = session.query(UserDetails).filter_by(user_name='Pallavi Shrestha')
       c = query.count()
      
-      user = UserDetails(sn=12,user_name='Saurav Karki',burrowed_book_id=90)
+      user = UserDetails(sn=16,user_name='Pallavi Shrestha',burrowed_book_id=90)
       if c<=2:
           session.add(user)
           session.commit()
@@ -81,7 +81,7 @@ def insert_user():
 @app.route('/api/insert_books/<int:b_id>',methods=['GET'])
 def insert_books(b_id):
     try:
-        books = Book(book_id=100,category='Fictoin',description='Finding your Ikigai',book_name='Ikigai',author_name='Warren')
+        books = Book(book_id=101,category='Fictoin',description='A story of a boy',book_name='The kite runner',author_name='Warren')
         session.add(books)
         session.commit()
         return jsonify({'message':'New Book added to library',
